@@ -3,12 +3,13 @@ package code.GUI;
 // Represents a deposit ATM transaction
 
 import code.Businnes_Logic.DepositSlot;
+import code.Businnes_Logic.Euro;
 import code.Businnes_Logic.Transaction;
 import code.Database.BankDatabase;
 
 public class Deposit extends Transaction
 {
-   private double amount; // amount to deposit
+   private Euro amount; // amount to deposit
    private Keypad keypad; // reference to keypad
    private DepositSlot depositSlot; // reference to deposit slot
    private final static int CANCELED = 0; // constant for cancel option
@@ -35,7 +36,7 @@ public class Deposit extends Transaction
       amount = promptForDepositAmount(); // get deposit amount from user
 
       // check whether user entered a deposit amount or canceled
-      if ( amount != CANCELED )
+      if ( amount.getValore() != CANCELED )
       {
          // request deposit envelope containing specified amount
          screen.displayMessage( 
@@ -69,22 +70,20 @@ public class Deposit extends Transaction
       } // end else
    } // end method execute
 
-   // prompt user to enter a deposit amount in cents 
-   private double promptForDepositAmount()
+   // prompt user to enter a deposit amount in cents
+   private Euro promptForDepositAmount()
    {
       Screen screen = getScreen(); // get reference to screen
 
       // display the prompt
-      screen.displayMessage( "\nPlease enter a deposit amount in " + 
-         "CENTS (or 0 to cancel): " );
+      screen.displayMessage( "\nPlease enter a deposit amount in Euro without Cents (or 0 to cancel): " );
       int input = keypad.getInput(); // receive input of deposit amount
       
       // check whether the user canceled or entered a valid amount
       if ( input == CANCELED ) 
-         return CANCELED;
-      else
-      {
-         return ( double ) input / 100; // return dollar amount 
+         return new Euro(0);
+      else{ 
+         return new Euro(input); //return ( double ) input / 100; return dollar amount 
       } // end else
    } // end method promptForDepositAmount
 } // end class Deposit

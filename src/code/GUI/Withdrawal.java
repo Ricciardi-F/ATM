@@ -3,6 +3,7 @@ package code.GUI;
 // Represents a withdrawal ATM transaction
 
 import code.Businnes_Logic.CashDispenser;
+import code.Businnes_Logic.Euro;
 import code.Businnes_Logic.Transaction;
 import code.Database.BankDatabase;
 
@@ -32,7 +33,7 @@ public class Withdrawal extends Transaction
    public void execute()
    {
       boolean cashDispensed = false; // cash was not dispensed yet
-      double availableBalance; // amount available for withdrawal
+      Euro availableBalance; // amount available for withdrawal
 
       // get references to bank database and screen
       BankDatabase bankDatabase = getBankDatabase(); 
@@ -52,13 +53,14 @@ public class Withdrawal extends Transaction
                bankDatabase.getAvailableBalance( getAccountNumber() );
       
             // check whether the user has enough money in the account 
-            if ( amount <= availableBalance )
+            if ( amount <= availableBalance.getValore() )
             {   
                // check whether the cash dispenser has enough money
                if ( cashDispenser.isSufficientCashAvailable( amount ) )
-               {
+               {  
+                  Euro amountEuro = new Euro(amount);
                   // update the account involved to reflect withdrawal
-                  bankDatabase.debit( getAccountNumber(), amount );
+                  bankDatabase.debit( getAccountNumber(), amountEuro );
                   
                   cashDispenser.dispenseCash( amount ); // dispense cash
                   cashDispensed = true; // cash was dispensed
@@ -104,11 +106,11 @@ public class Withdrawal extends Transaction
       {
          // display the menu
          screen.displayMessageLine( "\nWithdrawal Menu:" );
-         screen.displayMessageLine( "1 - $20" );
-         screen.displayMessageLine( "2 - $40" );
-         screen.displayMessageLine( "3 - $60" );
-         screen.displayMessageLine( "4 - $100" );
-         screen.displayMessageLine( "5 - $200" );
+         screen.displayMessageLine( "1 - 20 Euro" );
+         screen.displayMessageLine( "2 - 40 Euro" );
+         screen.displayMessageLine( "3 - 60 Euro" );
+         screen.displayMessageLine( "4 - 100 Euro" );
+         screen.displayMessageLine( "5 - 200 Euro" );
          screen.displayMessageLine( "6 - Cancel transaction" );
          screen.displayMessage( "\nChoose a withdrawal amount: " );
 
