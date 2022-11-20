@@ -2,7 +2,6 @@ package code.Database;
 // BankDatabase.java
 // Represents the bank account information database 
 
-import code.Businnes_Logic.Account;
 import code.Businnes_Logic.Euro;
 
 public class BankDatabase
